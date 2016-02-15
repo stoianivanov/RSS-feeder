@@ -16,7 +16,7 @@ function myGetElementsByClassName(selector) {
 
 var rssReader = {
     containers : null,
-
+    
     // initialization function
     init : function(selector) {
         containers = myGetElementsByClassName(selector);
@@ -40,8 +40,11 @@ var rssReader = {
 
     // parsing of results by google
     parse : function(context, data) {
+        console.log("Printing context" + context);
+        console.log("Printing context" + context[12]);
         var container = document.getElementById(context);
         container.innerHTML = '';
+
 
         // creating list of elements
         var mainList = document.createElement('ul');
@@ -64,6 +67,9 @@ var rssReader = {
             listItem.appendChild(link);
 
             var desc = document.createElement('p');
+            console.log("content = " + i*context[12]);
+            desc.setAttribute('id', 'content' + i*context[12]);
+        
             desc.appendChild(contentSnippetText);
 
             // add description to list item
@@ -72,6 +78,7 @@ var rssReader = {
             // adding list item to main list
             mainList.appendChild(listItem);
         }
+
         container.appendChild(mainList);
     }
 };
@@ -99,11 +106,14 @@ filter = function(){
 window.onload = function() {
     rssReader.init('post_results');
 	filter();
-	var paragraphs = document.getElementsByTagName("p");
+	var paragraphs = document.getElementsByTagName("div");
+    var pp = document.getElementById("content1");
+    console.log(pp);
 	console.log(paragraphs);
 	console.log(paragraphs.length);
-	for(var i = 0; i < 15; i++)
+    console.log(paragraphs[1].childNodes[1].childNodes[0].textContent)
+	//for(var i = 0; i < 15; i++)
 	{
-		alert(paragraphs[i].innerHTML);
+		//alert(paragraphs.contentSnippetText);
 	}
 }
