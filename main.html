@@ -6,8 +6,20 @@
 	</script>
 </head>
  <body>
-	<button type="button" id="filter">Click Me!</button>
-	<input type="text" name="filter_text" id="txt_for_filter">
+    <div class="filter">
+    	<button type="button" id="filter">Filter by the news text</button>
+    	<input type="text" id="txt_for_filter">
+        
+        <button type="button" id="filter_title">Filter by the news title</button>
+        <input type="text" id="title_filter_txt">
+    </div>
+    <div class="search">
+        <button type="button" id="search_txt">Filter by the news text</button>
+        <input type="text" id="txt_for_search">
+        
+        <button type="button" id="search_title">Filter by the news title</button>
+        <input type="text" id="title_search_txt">
+    </div>
     <div class="example">
         <div class="post_results" id="post_results1" rss_num="8" rss_url="http://rss.news.yahoo.com/rss/topstories">
             <div class="loading_rss">

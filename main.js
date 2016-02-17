@@ -53,6 +53,7 @@ var rssReader = {
         var entries = data.feed.entries;
         for (var i=0; i<entries.length; i++) {
             var listItem = document.createElement('li');
+			listItem.setAttribute('id', 'item' + i + "_" + context[12]);
             var title = entries[i].title;
             var contentSnippet = entries[i].contentSnippet;
             var contentSnippetText = document.createTextNode(contentSnippet);
@@ -60,6 +61,7 @@ var rssReader = {
             var link = document.createElement('a');
             link.setAttribute('href', entries[i].link);
             link.setAttribute('target','_blank');
+			link.setAttribute('id', 'link' + i + "_" + context[12]);
             var text = document.createTextNode(title);
             link.appendChild(text);
 
@@ -67,8 +69,7 @@ var rssReader = {
             listItem.appendChild(link);
 
             var desc = document.createElement('p');
-            console.log("content = " + i*context[12]);
-            desc.setAttribute('id', 'content' + i*context[12]);
+            desc.setAttribute('id', 'content' + i + "_" + context[12]);
         
             desc.appendChild(contentSnippetText);
 
@@ -86,7 +87,7 @@ var rssReader = {
 
 
 isContain = function (first_text, second_text){
-	return first_text.toLowerCase().indexOf(second_text.toLowerCase)? true: false;
+	return first_text.toLowerCase().indexOf(second_text.toLowerCase()) != -1? true: false;
 }
 
 
@@ -96,19 +97,67 @@ filter = function(){
 	text = document.getElementById("txt_for_filter");
 	console.log(button);
 	button.onclick = function(){
-		alert("please work please");
 		console.log(text.value);
+	    filterBy(1,8,'content',text.value);
+        filterBy(2,8,'content',text.value);
 	}
+    buttonForTitle = document.getElementById("filter_title");
+    textForTitle = document.getElementById("title_filter_txt");
+    buttonForTitle.onclick = function(){
+        filterBy(1,8,'content',textForTitle.value);
+        filterBy(2,8,'content',textForTitle.value);
+    }  
+
+    searchButtonText = document.getElementById("search_txt");
+    searchText = document.getElementById("txt_for_search");
+    searchButtonText.onclick = function(){
+        console.log(text.value);
+        searchBy(1,8,'content',searchText.value);
+        searchBy(2,8,'content',searchText.value);
+    }   
 }
 
+filterBy = function(coulmn, size, by, txt){
+        var content;
+        for( var i = 0 ; i < size; ++i){
+            content = document.getElementById(by + i + "_" + coulmn)
+            console.log(isContain(txt,content.textContent));
+            console.log(txt);
+            console.log(content.textContent);
+            if (!isContain(content.textContent,txt)){
+                var item = document.getElementById("item" + i + "_" + coulmn);
+                item.style.visibility = "hidden";
+                content.style.visibility = "hidden";
+            }
+        }
+    }
 
+
+searchBy = function(coulmn, size, by, txt){
+        var content;
+        for( var i = 0 ; i < size; ++i){
+            content = document.getElementById(by + i + "_" + coulmn)
+            console.log(isContain(content.textContent,txt));
+            console.log(txt);
+            console.log(content.textContent);
+            if (isContain(content.textContent,txt)){
+                var item = document.getElementById("item" + i + "_" + coulmn);
+                console.log("pak li");
+                item.style.color = '#ff0000';
+                
+            }
+        }
+    }
 
 window.onload = function() {
     rssReader.init('post_results');
+	setTimeout(function (){
+	
 	filter();
 	var paragraphs = document.getElementsByTagName("div");
     var pp = document.getElementById("content1");
-    console.log(pp);
+    console.log(pp.textContent);
+	pp.style.visibility = "hidden";
 	console.log(paragraphs);
 	console.log(paragraphs.length);
     console.log(paragraphs[1].childNodes[1].childNodes[0].textContent)
@@ -116,4 +165,5 @@ window.onload = function() {
 	{
 		//alert(paragraphs.contentSnippetText);
 	}
+	},200);
 }
