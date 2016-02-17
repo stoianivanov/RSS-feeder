@@ -148,27 +148,69 @@ filterBy = function(coulmn, size, by, txt){
 
 
 searchBy = function(coulmn, size, by, txt){
+    var content;
+    for( var i = 0 ; i < size; ++i){
+        content = document.getElementById(by + i + "_" + coulmn)
+        console.log(isContain(content.textContent,txt));
+        console.log(txt);
+        console.log(content.textContent);
+        if (isContain(content.textContent,txt)){
+            var item = document.getElementById(by + i + "_" + coulmn);
+            console.log("pak li");
+            item.style.color = '#ff0000';
+                
+        }
+    }
+}
+
+
+keydown = function(obj, by, size, column){
+    console.log("we have a event");
+    inputText = document.getElementById(obj);
+    inputText.onkeydown = function(){
+        console.log("fuck shit");
         var content;
         for( var i = 0 ; i < size; ++i){
-            content = document.getElementById(by + i + "_" + coulmn)
-            console.log(isContain(content.textContent,txt));
+            console.log("don't entered");
+            content = document.getElementById(by + i + "_" + coulmn);
+            console.log(isContain(content.textContent,obj.value));
             console.log(txt);
-            console.log(content.textContent);
-            if (isContain(content.textContent,txt)){
+            console.log(content);
+            if (isContain(content.textContent,obj.value)){
                 var item = document.getElementById(by + i + "_" + coulmn);
-                console.log("pak li");
-                item.style.color = '#ff0000';
-                
+                item.style.visibility = "hidden";  
             }
         }
     }
 
+}
+
+
+getNotFilterFeed = function(size, coulmn){
+    var history_list = document.getElementById("history_list");
+    for( var i = 0 ; i < size; ++i){
+        var item = document.getElementById('item' + i + "_" + coulmn);
+        console.log(item.style.visibility); 
+        if(item.style.visibility !== "hidden"){
+            console.log(item);
+            history_list.appendChild(item.cloneNode(true));
+        }
+        
+    }
+}
 window.onload = function() {
     rssReader.init('post_results');
 	search();
 	filter();
+    keydown("txt_for_filter", "content",8,1);
     var reloadButton = document.getElementById("reload");
     reloadButton.onclick = function(){
         rssReader.init('post_results');
+    }
+
+    var saveButton = document.getElementById("save");
+    saveButton.onclick= function(){
+        getNotFilterFeed(8,1);
+        getNotFilterFeed(8,2);
     }
 }
