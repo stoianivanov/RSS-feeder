@@ -108,14 +108,28 @@ filter = function(){
         filterBy(2,8,'content',textForTitle.value);
     }  
 
+
+}
+
+search = function(){
     searchButtonText = document.getElementById("search_txt");
     searchText = document.getElementById("txt_for_search");
     searchButtonText.onclick = function(){
-        console.log(text.value);
         searchBy(1,8,'content',searchText.value);
         searchBy(2,8,'content',searchText.value);
-    }   
+    }  
+    searchButtonTitle = document.getElementById("search_title");
+    searchTitle = document.getElementById("title_search_txt");
+    searchButtonTitle.onclick = function(){
+        searchBy(1,8,'link',searchTitle.value);
+        searchBy(2,8,'link',searchTitle.value);
+    }  
+
+
 }
+
+
+
 
 filterBy = function(coulmn, size, by, txt){
         var content;
@@ -141,7 +155,7 @@ searchBy = function(coulmn, size, by, txt){
             console.log(txt);
             console.log(content.textContent);
             if (isContain(content.textContent,txt)){
-                var item = document.getElementById("item" + i + "_" + coulmn);
+                var item = document.getElementById(by + i + "_" + coulmn);
                 console.log("pak li");
                 item.style.color = '#ff0000';
                 
@@ -151,19 +165,10 @@ searchBy = function(coulmn, size, by, txt){
 
 window.onload = function() {
     rssReader.init('post_results');
-	setTimeout(function (){
-	
+	search();
 	filter();
-	var paragraphs = document.getElementsByTagName("div");
-    var pp = document.getElementById("content1");
-    console.log(pp.textContent);
-	pp.style.visibility = "hidden";
-	console.log(paragraphs);
-	console.log(paragraphs.length);
-    console.log(paragraphs[1].childNodes[1].childNodes[0].textContent)
-	//for(var i = 0; i < 15; i++)
-	{
-		//alert(paragraphs.contentSnippetText);
-	}
-	},200);
+    var reloadButton = document.getElementById("reload");
+    reloadButton.onclick = function(){
+        rssReader.init('post_results');
+    }
 }
